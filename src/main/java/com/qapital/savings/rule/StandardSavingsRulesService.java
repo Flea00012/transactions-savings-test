@@ -9,13 +9,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.InvalidPropertiesFormatException;
 import java.util.List;
 
 @Service
 public class StandardSavingsRulesService implements SavingsRulesService {
 
-    private static final Logger logger = LoggerFactory.getLogger(StandardSavingsRulesService.class);
 
     private final TransactionsService transactionsService;
 
@@ -65,7 +63,6 @@ public class StandardSavingsRulesService implements SavingsRulesService {
                             savingsRule.addSavingsGoal(savingsGoalId);
                             Validate.notNull(newSavings);
                             listOfSavingsEvents.add(newSavings);
-                            logger.info("New savings event with id: " + newSavings.getId());
 
                         } else {
                             return null;
@@ -82,7 +79,6 @@ public class StandardSavingsRulesService implements SavingsRulesService {
 
             default:
                 return null;
-            logger.info("invalid savings rule is applied");
 
 
             //determine savingsrule
@@ -94,7 +90,8 @@ public class StandardSavingsRulesService implements SavingsRulesService {
             //return savings events
 
 
-            return listOfSavingsEvents;
         }
+        return listOfSavingsEvents;
 
     }
+}
