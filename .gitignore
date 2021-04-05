@@ -2,3 +2,7 @@
 /.idea
 /target
 §
+
+src/.idea/
+src/qapital-backend-test.iml
+
