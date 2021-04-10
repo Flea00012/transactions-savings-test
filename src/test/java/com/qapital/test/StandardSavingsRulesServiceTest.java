@@ -1,29 +1,27 @@
 package com.qapital.test;
 
 import com.qapital.bankdata.transaction.StandardTransactionsService;
-import com.qapital.bankdata.transaction.Transaction;
 import com.qapital.bankdata.transaction.TransactionsService;
 import com.qapital.savings.event.SavingsEvent;
 import com.qapital.savings.rule.SavingsRule;
 import com.qapital.savings.rule.SavingsRulesService;
 import com.qapital.savings.rule.StandardSavingsRulesService;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.ComponentScan;
 
 import java.util.List;
 
-@Slf4j
+@ComponentScan(basePackages = {"com.qapital","com.qapital.savings.rule"})
 @SpringBootTest
 public class StandardSavingsRulesServiceTest {
 
-    @Autowired
+
     private SavingsRulesService savingsRulesService;
-    @Autowired
+
     private TransactionsService transactionsService;
 
     @Before
@@ -35,7 +33,6 @@ public class StandardSavingsRulesServiceTest {
     @Ignore
     @Test
     public void given_latestTransactionsAreLoaded_then_applySavingsRules() {
-        log.info("Inside the execute method() unit test.");
 
         Long userId = 1001L;
 

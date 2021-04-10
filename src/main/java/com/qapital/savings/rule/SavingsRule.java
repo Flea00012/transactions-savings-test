@@ -1,124 +1,92 @@
 package com.qapital.savings.rule;
 
 
+import lombok.*;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * The core configuration object for a Savings Rule.
  */
+
+
+@Data
+@Slf4j
 public class SavingsRule {
-	
-	private Long id;
-	private Long userId;
-	
-	private String placeDescription;
-	private Double amount;
-	private List<Long> savingsGoalIds;
-	private RuleType ruleType;
-	private Status status;
-	
-	public SavingsRule() {}
 
-	public static SavingsRule createGuiltyPleasureRule(Long id, Long userId, String placeDescription, Double penaltyAmount) {
-		SavingsRule guiltyPleasureRule = new SavingsRule();
+    private Long id;
+    private Long userId;
+
+    private String placeDescription;
+    private Double amount;
+    private List<Long> savingsGoalIds;
+    private RuleType ruleType;
+    private RuleStatus ruleStatus;
+
+
+    public enum RuleType {
+        GUILTYPLEASURE, ROUNDUP
+    }
+
+
+    public enum RuleStatus {
+        ACTIVE, DELETED, PAUSED
+    }
+
+    public SavingsRule() {
+    }
+
+
+    public static SavingsRule createGuiltyPleasureRule(Long id, Long userId, String placeDescription, Double penaltyAmount) {
+        log.debug("creating GuiltyPleasure with id: " + id);
+        SavingsRule guiltyPleasureRule = new SavingsRule();
         guiltyPleasureRule.setId(id);
-		guiltyPleasureRule.setUserId(userId);
-		guiltyPleasureRule.setPlaceDescription(placeDescription);
-		guiltyPleasureRule.setAmount(penaltyAmount);
-		guiltyPleasureRule.setSavingsGoalIds(new ArrayList<>());
-		guiltyPleasureRule.setRuleType(RuleType.guiltypleasure);
-		guiltyPleasureRule.setStatus(Status.active);
-		return guiltyPleasureRule;
-	}
-	
-	public static SavingsRule createRoundupRule(Long id, Long userId, Double roundupToNearest) {
-		SavingsRule roundupRule = new SavingsRule();
+        guiltyPleasureRule.setUserId(userId);
+        guiltyPleasureRule.setPlaceDescription(placeDescription);
+        guiltyPleasureRule.setAmount(penaltyAmount);
+        guiltyPleasureRule.setSavingsGoalIds(new ArrayList<>());
+        guiltyPleasureRule.setRuleType(RuleType.GUILTYPLEASURE);
+        guiltyPleasureRule.setStatus(RuleStatus.ACTIVE);
+        return guiltyPleasureRule;
+    }
+
+    public static SavingsRule createRoundupRule(Long id, Long userId, Double roundupToNearest) {
+        log.debug("creating RoundupRule with id: " + id);
+        SavingsRule roundupRule = new SavingsRule();
         roundupRule.setId(id);
-		roundupRule.setUserId(userId);
-		roundupRule.setAmount(roundupToNearest);
-		roundupRule.setSavingsGoalIds(new ArrayList<>());
-		roundupRule.setRuleType(RuleType.roundup);
-		roundupRule.setStatus(Status.active);
-		return roundupRule;
-	}
-
-	public void addSavingsGoal(Long savingsGoalId) {
-		if (!savingsGoalIds.contains(savingsGoalId)) {
-			savingsGoalIds.add(savingsGoalId);
-		}
-	}
-
-	public void removeSavingsGoal(Long savingsGoalId) {
-		savingsGoalIds.remove(savingsGoalId);
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Long getUserId() {
-		return userId;
-	}
-
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
-
-    public String getPlaceDescription() {
-        return placeDescription;
+        roundupRule.setUserId(userId);
+        roundupRule.setAmount(roundupToNearest);
+        roundupRule.setSavingsGoalIds(new ArrayList<>());
+        roundupRule.setRuleType(RuleType.ROUNDUP);
+        roundupRule.setStatus(RuleStatus.ACTIVE);
+        return roundupRule;
     }
 
-    public void setPlaceDescription(String placeDescription) {
-        this.placeDescription = placeDescription;
+    public void addSavingsGoal(Long savingsGoalId) {
+        log.debug("adding savingsGoal with id: " + savingsGoalId);
+        if (!savingsGoalIds.contains(savingsGoalId)) {
+            savingsGoalIds.add(savingsGoalId);
+        }
     }
 
-    public Double getAmount() {
-		return amount;
-	}
+    public void removeSavingsGoal(Long savingsGoalId) {
+        log.debug("removing savingsGoal with id: " + savingsGoalId);
+        savingsGoalIds.remove(savingsGoalId);
+    }
 
-	public void setAmount(Double amount) {
-		this.amount = amount;
-	}
+    public RuleStatus getStatus() {
+        return ruleStatus;
+    }
 
-	public List<Long> getSavingsGoalIds() {
-		return savingsGoalIds;
-	}
+    public void setStatus(RuleStatus ruleStatus) {
+        this.ruleStatus = ruleStatus;
+    }
 
-	public void setSavingsGoalIds(List<Long> savingsGoalIds) {
-		this.savingsGoalIds = savingsGoalIds;
-	}
+    public boolean isActive() {
+        return RuleStatus.ACTIVE.equals(getStatus());
+    }
 
-	public RuleType getRuleType() {
-		return ruleType;
-	}
-
-	public void setRuleType(RuleType ruleType) {
-		this.ruleType = ruleType;
-	}
-	
-	public Status getStatus() {
-		return status;
-	}
-	
-	public void setStatus(Status status) {
-		this.status = status;
-	}
-
-	public boolean isActive() {
-		return Status.active.equals(getStatus());
-	}
-	
-	public enum RuleType {
-        guiltypleasure, roundup
-	}
-	
-	public enum Status {
-		active, deleted, paused
-	}
 
 }
