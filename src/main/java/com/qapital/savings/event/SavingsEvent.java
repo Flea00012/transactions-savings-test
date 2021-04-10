@@ -1,5 +1,6 @@
 package com.qapital.savings.event;
 
+import com.qapital.bankdata.transaction.Transaction;
 import com.qapital.savings.rule.SavingsRule;
 import com.qapital.savings.rule.SavingsRule.RuleType;
 import lombok.*;
@@ -44,6 +45,8 @@ public class SavingsEvent {
 
     public SavingsEvent(Long userId, Long savingsGoalId, Long savingsRuleId, EventName eventName, LocalDate date, Double amount, Long triggerId, SavingsRule savingsRule) {
         log.info("new savings event created for goalId: " + savingsGoalId);
+
+
         this.userId = userId;
         this.savingsGoalId = savingsGoalId;
         this.savingsRuleId = savingsRuleId;

@@ -1,11 +1,13 @@
 package com.qapital.bankdata.transaction;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 public class StandardTransactionsService implements TransactionsService {
 
@@ -16,6 +18,7 @@ public class StandardTransactionsService implements TransactionsService {
 
     private static List<Transaction> createDummyTransactions(Long userId) {
 
+        log.info("Creating dummy transactions");
         List<Transaction> transactions = new ArrayList<>();
 
         transactions.add(new Transaction(1l,userId, -5.34d, "Starbucks", LocalDate.of(2015,7,1)));
