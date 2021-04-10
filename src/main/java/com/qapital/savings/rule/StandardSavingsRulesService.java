@@ -3,6 +3,7 @@ package com.qapital.savings.rule;
 import com.qapital.bankdata.transaction.Transaction;
 import com.qapital.bankdata.transaction.TransactionsService;
 import com.qapital.savings.event.SavingsEvent;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 public class StandardSavingsRulesService implements SavingsRulesService {
 
@@ -41,6 +43,8 @@ public class StandardSavingsRulesService implements SavingsRulesService {
 
     @Override
     public List<SavingsEvent> executeRule(SavingsRule savingsRule) {
+        log.debug("inside executeRule");
+
         Validate.notNull(savingsRule);
         List<SavingsEvent> listOfSavingsEvents = new ArrayList<>();
         List<Transaction> transactions;
@@ -53,7 +57,7 @@ public class StandardSavingsRulesService implements SavingsRulesService {
             save(transaction.getAmount());          */
 
         switch (savingsRule.getRuleType()) {
-            case guiltypleasure:
+            case GUILTYPLEASURE:
 
                 for (Transaction transaction : transactions) {
                     if (transaction.getAmount() < 0) {
@@ -92,7 +96,7 @@ public class StandardSavingsRulesService implements SavingsRulesService {
                 }
                 break;
 
-            case roundup:
+            case ROUNDUP:
 
                 for (Transaction transaction : transactions) {
                     if (transaction.getAmount() < 0) {
