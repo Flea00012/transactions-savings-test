@@ -40,7 +40,7 @@ public class SavingsRule {
 
 
     public static SavingsRule createGuiltyPleasureRule(Long id, Long userId, String placeDescription, Double penaltyAmount) {
-        log.debug("creating GuiltyPleasure with id: " + id);
+        log.info("creating GuiltyPleasure with id: " + id);
         SavingsRule guiltyPleasureRule = new SavingsRule();
         guiltyPleasureRule.setId(id);
         guiltyPleasureRule.setUserId(userId);
@@ -53,7 +53,7 @@ public class SavingsRule {
     }
 
     public static SavingsRule createRoundupRule(Long id, Long userId, Double roundupToNearest) {
-        log.debug("creating RoundupRule with id: " + id);
+        log.info("creating RoundupRule with id: " + id);
         SavingsRule roundupRule = new SavingsRule();
         roundupRule.setId(id);
         roundupRule.setUserId(userId);
@@ -65,14 +65,14 @@ public class SavingsRule {
     }
 
     public void addSavingsGoal(Long savingsGoalId) {
-        log.debug("adding savingsGoal with id: " + savingsGoalId);
+        log.info("adding savingsGoal with id: " + savingsGoalId);
         if (!savingsGoalIds.contains(savingsGoalId)) {
             savingsGoalIds.add(savingsGoalId);
         }
     }
 
     public void removeSavingsGoal(Long savingsGoalId) {
-        log.debug("removing savingsGoal with id: " + savingsGoalId);
+        log.info("removing savingsGoal with id: " + savingsGoalId);
         savingsGoalIds.remove(savingsGoalId);
     }
 

@@ -21,7 +21,7 @@ public class SavingsRulesController {
 
     @GetMapping("/active/{userId}")
     public List<SavingsRule> activeRulesForUser(@PathVariable Long userId) {
-        log.debug("Inside activeRulesForUser");
+        log.info("Inside activeRulesForUser");
         return savingsRulesService.activeRulesForUser(userId);
     }
 

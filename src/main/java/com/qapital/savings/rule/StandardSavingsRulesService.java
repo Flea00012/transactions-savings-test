@@ -43,7 +43,7 @@ public class StandardSavingsRulesService implements SavingsRulesService {
 
     @Override
     public List<SavingsEvent> executeRule(SavingsRule savingsRule) {
-        log.debug("inside executeRule");
+        log.info("inside executeRule");
 
         Validate.notNull(savingsRule);
         List<SavingsEvent> listOfSavingsEvents = new ArrayList<>();
@@ -62,7 +62,7 @@ public class StandardSavingsRulesService implements SavingsRulesService {
                 for (Transaction transaction : transactions) {
                     if (transaction.getAmount() < 0) {
 
-                        System.out.println("Transaction with id: " + transaction.getId() +
+                        log.info("Transaction with id: " + transaction.getId() +
                                 " is of type debit and will result in a savings event.");
 
                         Validate.notNull(transaction);
@@ -80,7 +80,7 @@ public class StandardSavingsRulesService implements SavingsRulesService {
                                 savingsRule.addSavingsGoal(savingsGoalId);
                                 Validate.notNull(newSavings);
                                 listOfSavingsEvents.add(newSavings);
-                                System.out.println("guilty savings add in dollars: " + newSavings.getAmount());
+                                log.info("guilty savings add in dollars: " + newSavings.getAmount());
 
                             } else {
                                 continue;
@@ -89,7 +89,7 @@ public class StandardSavingsRulesService implements SavingsRulesService {
                         }
 
                     } else {
-                        System.out.println("Transaction with id: " + transaction.getId() +
+                        log.info("Transaction with id: " + transaction.getId() +
                                 " is of type credit, thus no savings event.");
                     }
 
@@ -101,7 +101,7 @@ public class StandardSavingsRulesService implements SavingsRulesService {
                 for (Transaction transaction : transactions) {
                     if (transaction.getAmount() < 0) {
 
-                        System.out.println("Transaction with id: " + transaction.getId() +
+                        log.info("Transaction with id: " + transaction.getId() +
                                 " is of type debit and will result in a savings event.");
 
                         Validate.notNull(transaction);
@@ -133,7 +133,7 @@ public class StandardSavingsRulesService implements SavingsRulesService {
                 break;
 
             default:
-                System.out.println("An invalid savings rule type was selected");
+                log.info("An invalid savings rule type was selected");
                 return null;
 
         }
