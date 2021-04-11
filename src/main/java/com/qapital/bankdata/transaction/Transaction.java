@@ -6,7 +6,7 @@ import lombok.*;
 import java.time.LocalDate;
 
 @NoArgsConstructor
-//@AllArgsConstructor
+@AllArgsConstructor
 @Builder
 @Data
 public class Transaction {
@@ -17,12 +17,6 @@ public class Transaction {
     private String description;
     private LocalDate date;
 
-    public Transaction(Long id, Long userId, Double amount, String description, LocalDate date) {
-        this.id = id;
-        this.userId = userId;
-        this.amount = amount;
-        this.description = description;
-        this.date = date;
-    }
+
 
 }

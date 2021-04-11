@@ -129,8 +129,7 @@ public class StandardSavingsRulesService implements SavingsRulesService {
                             bigDecimal = bigDecimal.setScale(0, RoundingMode.UP);
                             log.info("new value of bigDecimal is: " + bigDecimal);
 
-                            BigDecimal bd; // the value you get
-                            double adjustedAmount = bigDecimal.doubleValue(); // The double you want
+                            double adjustedAmount = bigDecimal.doubleValue();
                             log.info("after rounding amount = " + adjustedAmount);
 
 
