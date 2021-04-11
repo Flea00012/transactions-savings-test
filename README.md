@@ -1,6 +1,13 @@
 # qapital-backend-test
 Test task for backend developers
 
+
+
+## Class Diagram
+
+ ![alt text](https://github.com/Flea00012/transactions-savings-test/blob/master/UMLdiagrams/main.svg)
+ 
+
 ## Introduction
 This is a code skeleton for a test task for backend developer candidates seeking to join Qapital.
 
