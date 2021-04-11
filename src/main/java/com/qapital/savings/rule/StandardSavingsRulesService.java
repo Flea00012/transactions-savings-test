@@ -8,10 +8,13 @@ import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
+
 @Service
 public class StandardSavingsRulesService implements SavingsRulesService {
 
@@ -43,7 +46,7 @@ public class StandardSavingsRulesService implements SavingsRulesService {
 
     @Override
     public List<SavingsEvent> executeRule(SavingsRule savingsRule) {
-        log.info("inside executeRule");
+        log.info("A rule execution is happening for rule id: " + savingsRule.getId());
 
         Validate.notNull(savingsRule);
         List<SavingsEvent> listOfSavingsEvents = new ArrayList<>();
@@ -53,34 +56,47 @@ public class StandardSavingsRulesService implements SavingsRulesService {
 
         transactions = transactionsService.latestTransactionsForUser(1L);
 
-/*        if(transactions.getDescription == savingsRule.getDescription){
-            save(transaction.getAmount());          */
+        long count = 0L;
 
         switch (savingsRule.getRuleType()) {
             case GUILTYPLEASURE:
 
                 for (Transaction transaction : transactions) {
                     if (transaction.getAmount() < 0) {
+                        count++;
 
                         log.info("Transaction with id: " + transaction.getId() +
                                 " is of type debit and will result in a savings event.");
 
                         Validate.notNull(transaction);
                         for (Long savingsGoalId : savingsRule.getSavingsGoalIds()) {
+
                             Validate.notNull(savingsGoalId);
+
+                            if (savingsGoalId == null) {
+                                savingsGoalId = count;
+                            }
+
+
                             if (transaction.getDescription().equals("Starbucks")) {
-                                newSavings = new SavingsEvent(transaction.getUserId(), savingsGoalId,
-                                        savingsRule.getId(), SavingsEvent.EventName.rule_application,
-                                        transaction.getDate(), transaction.getAmount(),
-                                        savingsRule.getId(), savingsRule);
+
+                                newSavings = SavingsEvent.builder()
+                                        .transaction(transaction)
+                                        .savingsRuleId(savingsRule.getId())
+                                        .savingsGoalId(savingsGoalId)
+                                        .eventName(SavingsEvent.EventName.rule_application)
+                                        .ruleType(savingsRule.getRuleType())
+                                        .build();
 
                                 presentSavings += Math.abs(transaction.getAmount());
+//                                presentSavings += Math.abs(newSavings.getAmount()); //these should be equal
 
-                                //check this code - might be wrong!!
                                 savingsRule.addSavingsGoal(savingsGoalId);
                                 Validate.notNull(newSavings);
                                 listOfSavingsEvents.add(newSavings);
-                                log.info("guilty savings add in dollars: " + newSavings.getAmount());
+
+                                log.info("guilty savings added in dollars: " + newSavings.getAmount());
+
 
                             } else {
                                 continue;
@@ -108,22 +124,38 @@ public class StandardSavingsRulesService implements SavingsRulesService {
                         for (Long savingsGoalId : savingsRule.getSavingsGoalIds()) {
                             Validate.notNull(savingsGoalId);
 
-                            double costOfPurchase = Math.abs(transaction.getAmount());
+                            BigDecimal bigDecimal = BigDecimal.valueOf(transaction.getAmount());
+                            log.info("bigDecimal=" + bigDecimal);
+                            bigDecimal = bigDecimal.setScale(0, RoundingMode.UP);
+                            log.info("new value of bigDecimal is: " + bigDecimal);
 
-                            long factor = (long) Math.pow(10, 2);
+                            BigDecimal bd; // the value you get
+                            double adjustedAmount = bigDecimal.doubleValue(); // The double you want
+                            log.info("after rounding amount = " + adjustedAmount);
 
-                            costOfPurchase = costOfPurchase * factor;
 
-                            long roundedResult = Math.round(costOfPurchase);
+                            if (adjustedAmount % 2 != 0) {
+                                adjustedAmount = adjustedAmount + 1;
 
-                            double correctedCost = (roundedResult / factor);
+                            } else {
+                                adjustedAmount = adjustedAmount;
+                            }
 
-                            presentSavings += correctedCost;
+                            log.info("after rounding and checking, amount = " + adjustedAmount);
 
-                            newSavings = new SavingsEvent(transaction.getUserId(), savingsGoalId,
-                                    savingsRule.getId(), SavingsEvent.EventName.rule_application,
-                                    transaction.getDate(), transaction.getAmount(),
-                                    savingsRule.getId(), savingsRule);
+                            double savedDifference = adjustedAmount - transaction.getAmount();
+
+                            newSavings = SavingsEvent.builder()
+                                    .transaction(transaction)
+                                    .savingsRuleId(savingsRule.getId())
+                                    .savingsGoalId(savingsGoalId)
+                                    .eventName(SavingsEvent.EventName.rule_application)
+                                    .ruleType(savingsRule.getRuleType())
+                                    .build();
+
+                            newSavings.setAmount(savedDifference);
+                            log.info("roundup savings added in dollars: " + newSavings.getAmount());
+
 
                         }
 

@@ -1,10 +1,8 @@
 package com.qapital.savings.rule;
 
+import com.qapital.savings.event.SavingsEvent;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,9 +19,14 @@ public class SavingsRulesController {
 
     @GetMapping("/active/{userId}")
     public List<SavingsRule> activeRulesForUser(@PathVariable Long userId) {
-        log.info("Inside activeRulesForUser");
+        log.info("get request to activeRulesForUser");
         return savingsRulesService.activeRulesForUser(userId);
     }
 
+    @PostMapping("/events")
+    public List<SavingsEvent> retrieveEvents(@RequestBody SavingsRule savingsRule){
+        log.info("retrieving all savings events from endpoint '/events'");
+        return savingsRulesService.executeRule(savingsRule);
+    }
 
 }

@@ -11,9 +11,11 @@ import java.util.List;
  * The core configuration object for a Savings Rule.
  */
 
-
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Slf4j
+@Data
 public class SavingsRule {
 
     private Long id;
@@ -35,12 +37,12 @@ public class SavingsRule {
         ACTIVE, DELETED, PAUSED
     }
 
-    public SavingsRule() {
-    }
+
 
 
     public static SavingsRule createGuiltyPleasureRule(Long id, Long userId, String placeDescription, Double penaltyAmount) {
         log.info("creating GuiltyPleasure with id: " + id);
+
         SavingsRule guiltyPleasureRule = new SavingsRule();
         guiltyPleasureRule.setId(id);
         guiltyPleasureRule.setUserId(userId);
@@ -54,6 +56,7 @@ public class SavingsRule {
 
     public static SavingsRule createRoundupRule(Long id, Long userId, Double roundupToNearest) {
         log.info("creating RoundupRule with id: " + id);
+
         SavingsRule roundupRule = new SavingsRule();
         roundupRule.setId(id);
         roundupRule.setUserId(userId);
