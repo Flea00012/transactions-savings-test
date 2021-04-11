@@ -21,6 +21,8 @@ public class StandardTransactionsService implements TransactionsService {
         log.info("Creating dummy transactions");
         List<Transaction> transactions = new ArrayList<>();
 
+
+
         transactions.add(new Transaction(1l,userId, -5.34d, "Starbucks", LocalDate.of(2015,7,1)));
         transactions.add(new Transaction(2l,userId, -2.16d, "Starbucks", LocalDate.of(2015,7,2)));
         transactions.add(new Transaction(3l,userId, -3.09d, "McDonald's", LocalDate.of(2015,7,2)));

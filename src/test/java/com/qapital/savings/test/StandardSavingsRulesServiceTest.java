@@ -23,12 +23,8 @@ public class  StandardSavingsRulesServiceTest {
     SavingsRule savingsRule;
 
 
-
-
     @Test
     public void givenUserLoggedIn_whenLoadingLatestTransactionsWithService_thenApplySavingsRulesToTransactions() {
-
-
 
 
 

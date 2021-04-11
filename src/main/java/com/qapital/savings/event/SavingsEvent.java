@@ -18,15 +18,15 @@ import java.time.LocalDate;
  */
 
 @Slf4j
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Data
 public class SavingsEvent {
 
-    public enum EventName {
-        manual, started, stopped, rule_application, ifttt_transfer, joined, withdrawal, internal_transfer, cancellation, incentive_payout, interest
-    }
-
 
     private Long id;
+
     private Long userId;
     private Long savingsGoalId;
     private Long savingsRuleId;
@@ -37,22 +37,38 @@ public class SavingsEvent {
     private RuleType ruleType;
     private Long savingsTransferId;
     private Boolean cancelled;
-
     private Instant created;
 
-    public SavingsEvent() {
+    private Transaction transaction = null;
+
+    public enum EventName {
+        manual, started, stopped, rule_application, ifttt_transfer, joined, withdrawal, internal_transfer, cancellation, incentive_payout, interest
     }
 
-    public SavingsEvent(Long userId, Long savingsGoalId, Long savingsRuleId, EventName eventName, LocalDate date, Double amount, Long triggerId, SavingsRule savingsRule) {
+
+    public SavingsEvent(Transaction transaction, Long savingsGoalId, Long savingsRuleId, EventName eventName, Long triggerId, SavingsRule savingsRule) {
         log.info("new savings event created for goalId: " + savingsGoalId);
 
+        try {
+            this.transaction = transaction;
 
-        this.userId = userId;
+        } catch (Exception e) {
+            log.error("failed to initialise a transaction due to exception of type: " + e.getMessage());
+            transaction = Transaction.builder()
+                    .id(1L)
+                    .userId(1L)
+                    .amount(0d)
+                    .description("-")
+                    .date(LocalDate.of(2021, 1, 1))
+                    .build();
+        }
+
+        this.userId = transaction.getUserId();
         this.savingsGoalId = savingsGoalId;
         this.savingsRuleId = savingsRuleId;
         this.eventName = eventName;
-        this.date = date;
-        this.amount = amount;
+        this.date = transaction.getDate();
+        this.amount = transaction.getAmount();
         this.triggerId = triggerId;
         this.ruleType = savingsRule.getRuleType();
         this.created = Instant.now();
