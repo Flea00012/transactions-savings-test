@@ -2,6 +2,7 @@ package com.qapital.savings.rule;
 
 import com.qapital.savings.event.SavingsEvent;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,10 +12,10 @@ import java.util.List;
 @RequestMapping("/api/savings/rule")
 public class SavingsRulesController {
 
-    private final SavingsRulesService savingsRulesService;
+    private final StandardSavingsRulesService savingsRulesService;
 
-    public SavingsRulesController(SavingsRulesService savingsRulesService) {
-        this.savingsRulesService = savingsRulesService;
+    public SavingsRulesController(@Autowired StandardSavingsRulesService savingsRulesService1) {
+        this.savingsRulesService = savingsRulesService1;
     }
 
     @GetMapping("/active/{userId}")
@@ -26,7 +27,10 @@ public class SavingsRulesController {
     @PostMapping("/events")
     public List<SavingsEvent> retrieveEvents(@RequestBody SavingsRule savingsRule){
         log.info("retrieving all savings events from endpoint '/events'");
-        return savingsRulesService.executeRule(savingsRule);
+
+        savingsRulesService.executeRule(savingsRule);
+
+        return savingsRulesService.getAll();
     }
 
 }
