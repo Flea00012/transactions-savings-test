@@ -9,7 +9,6 @@ import com.qapital.savings.rule.SavingsRulesService;
 import com.qapital.savings.rule.StandardSavingsRulesService;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
@@ -34,18 +33,16 @@ public class StandardSavingsRulesServiceTest {
         savingsRulesService = new StandardSavingsRulesService(transactionsService);
     }
 
-    @Ignore
     @Test
     public void given_latestTransactionsAreLoaded_then_applyGuiltyPleasureSavingsRules() {
 
         Long userId = 1001L;
-        List<Long> list = new ArrayList<>();
 
 
         Transaction transaction = Transaction.builder()
                 .id(1L)
                 .userId(userId)
-                .amount(4d)
+                .amount(5.34d)      // same as Math.abs() of the first transaction
                 .description("Starbucks")
                 .date(LocalDate.of(2021, 1, 1))
                 .build();
@@ -62,6 +59,7 @@ public class StandardSavingsRulesServiceTest {
         List<SavingsEvent> savingsEvent = savingsRulesService.executeRule(savingsRule);
 
         Assert.assertNotNull(savingsEvent);
+        Assert.assertEquals(transaction.getAmount(), savingsEvent.get(0).getAmount());
 
 
     }

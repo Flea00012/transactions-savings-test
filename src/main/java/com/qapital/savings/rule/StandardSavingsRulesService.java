@@ -66,7 +66,7 @@ public class StandardSavingsRulesService implements SavingsRulesService {
                         count++;
 
                         log.info("Transaction with id: " + transaction.getId() +
-                                " is of type debit and will result in a savings event.");
+                                " is of type debit and will result in a GUILTYPLEASURE savings event.");
 
                         Validate.notNull(transaction);
                         for (Long savingsGoalId : savingsRule.getSavingsGoalIds()) {
@@ -79,12 +79,14 @@ public class StandardSavingsRulesService implements SavingsRulesService {
 
 
                             if (transaction.getDescription().equals("Starbucks")) {
+                                log.error("transaction amount: " + transaction.getAmount());
 
                                 newSavings = SavingsEvent.builder()
                                         .transaction(transaction)
                                         .savingsRuleId(savingsRule.getId())
                                         .savingsGoalId(savingsGoalId)
                                         .eventName(SavingsEvent.EventName.rule_application)
+                                        .amount(Math.abs(transaction.getAmount()))
                                         .ruleType(savingsRule.getRuleType())
                                         .build();
 
@@ -118,7 +120,7 @@ public class StandardSavingsRulesService implements SavingsRulesService {
                     if (transaction.getAmount() < 0) {
 
                         log.info("Transaction with id: " + transaction.getId() +
-                                " is of type debit and will result in a savings event.");
+                                " is of type debit and will result in a ROUNDUP savings event.");
 
                         Validate.notNull(transaction);
                         for (Long savingsGoalId : savingsRule.getSavingsGoalIds()) {
@@ -149,6 +151,7 @@ public class StandardSavingsRulesService implements SavingsRulesService {
                                     .savingsRuleId(savingsRule.getId())
                                     .savingsGoalId(savingsGoalId)
                                     .eventName(SavingsEvent.EventName.rule_application)
+                                    .amount(Math.abs(transaction.getAmount()))
                                     .ruleType(savingsRule.getRuleType())
                                     .build();
 
