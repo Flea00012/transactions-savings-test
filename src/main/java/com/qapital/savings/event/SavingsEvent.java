@@ -45,7 +45,7 @@ public class SavingsEvent {
         manual, started, stopped, rule_application, ifttt_transfer, joined, withdrawal, internal_transfer, cancellation, incentive_payout, interest
     }
 
-
+    @Builder
     public SavingsEvent(Transaction transaction, Long savingsGoalId, Long savingsRuleId, EventName eventName, Long triggerId, SavingsRule savingsRule) {
         log.info("new savings event created for goalId: " + savingsGoalId);
 

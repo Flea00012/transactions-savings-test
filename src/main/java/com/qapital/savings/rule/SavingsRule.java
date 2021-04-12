@@ -38,8 +38,6 @@ public class SavingsRule {
     }
 
 
-
-
     public static SavingsRule createGuiltyPleasureRule(Long id, Long userId, String placeDescription, Double penaltyAmount) {
         log.info("creating GuiltyPleasure with id: " + id);
 
