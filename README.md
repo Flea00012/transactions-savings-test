@@ -2,10 +2,14 @@
 Test task for backend developers
 
 
+## Please note: you need a compiler on your IDE that is configured to run Lombok or you will get an error.
+
 
 ## Class Diagram
 
  ![alt text](https://github.com/Flea00012/transactions-savings-test/blob/master/UMLdiagrams/main.svg)
+ 
+ 
  
 
 ## Introduction
