@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 
@@ -25,6 +26,23 @@ public class StandardSavingsRulesService implements SavingsRulesService {
     @Autowired
     public StandardSavingsRulesService(TransactionsService transactionsService) {
         this.transactionsService = transactionsService;
+    }
+
+
+    @Autowired
+    private SavingsRepository savingsRepository;
+
+    public List<SavingsEvent> getAll() {
+        return savingsRepository.findAll();
+    }
+
+
+    public Optional<SavingsEvent> getById(Long id) {
+        return savingsRepository.findById(id);
+    }
+
+    public SavingsEvent create(SavingsEvent savingsEvent) {
+        return savingsRepository.save(savingsEvent);
     }
 
 
@@ -97,7 +115,11 @@ public class StandardSavingsRulesService implements SavingsRulesService {
                                 Validate.notNull(newSavings);
                                 listOfSavingsEvents.add(newSavings);
 
+
                                 log.info("guilty savings added in dollars: " + newSavings.getAmount());
+
+
+                                create(newSavings);
 
 
                             } else {
@@ -158,6 +180,7 @@ public class StandardSavingsRulesService implements SavingsRulesService {
                             newSavings.setAmount(savedDifference);
                             log.info("roundup savings added in dollars: " + newSavings.getAmount());
 
+                            create(newSavings);
 
                         }
 
@@ -171,6 +194,7 @@ public class StandardSavingsRulesService implements SavingsRulesService {
                 return null;
 
         }
+
         return listOfSavingsEvents;
 
     }
